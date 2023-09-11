@@ -22,16 +22,16 @@ public class Holder : MonoBehaviour
             OnHolderCollision?.Invoke();
     }
 
-    public void EnablePhysics()
+    public void EnableGravity()
     {
-        if (!_rb.isKinematic)
+        if (_rb.useGravity)
             StartCoroutine(EnablePhysicsCorutine());
     }
 
     private IEnumerator EnablePhysicsCorutine()
     {
-        _rb.isKinematic = true;
+        _rb.useGravity = false;
         yield return new WaitForSeconds(_delayTime);
-        _rb.isKinematic = false;
+        _rb.useGravity = true;
     }
 }

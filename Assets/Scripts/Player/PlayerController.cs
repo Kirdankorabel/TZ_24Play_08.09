@@ -49,8 +49,8 @@ public class PlayerController : MonoBehaviour
         Handheld.Vibrate();
         _pickups.Remove(pickup);
         foreach (var p in _pickups) 
-            p.EnablePhysics();
-        _holder.EnablePhysics();
+            p.EnableGravity();
+        _holder.EnableGravity();
         Track.Parented(pickup.gameObject);
     }    
 }
