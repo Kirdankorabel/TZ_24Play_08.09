@@ -8,9 +8,8 @@ public class Base : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var pickup = other.GetComponent<Pickup>();
+
         if(pickup && !pickup.IsUsed)
-        {
             OnPickupCollision?.Invoke(other.gameObject.GetComponent<Pickup>());
-        }
     }
 }

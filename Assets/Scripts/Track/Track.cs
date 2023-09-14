@@ -15,11 +15,13 @@ public class Track : MonoBehaviour
     private static float _scaleZ;
 
     public static event UnityAction OnTrackMoved;
+
     private void Awake()
     {
         _scaleZ = _trackGroundPrefab.transform.localScale.z;
         UIController.OnRestart += () => Reset();
     }
+
     private void Start()
     {
         CreateTrack();
@@ -49,18 +51,18 @@ public class Track : MonoBehaviour
 
     private void CreateTrack()
     {
-        for(var i = 0; i < _elementsCount; i++)
+        TrackElement element;
+        for (var i = 0; i < _elementsCount; i++)
         {
-            var element = Instantiate(_trackGroundPrefab, Vector3.forward * i * _scaleZ ,Quaternion.identity, transform);
+            element = Instantiate(_trackGroundPrefab, Vector3.forward * i * _scaleZ ,Quaternion.identity, transform);
             _elements.Add(element);
-            element.ID = i;
-            element.GetComponent<TrackElement>().OnPlayerEnter += (index) => MoveTrack(index);
+            element.GetComponent<TrackElement>().OnPlayerEnter += () => MoveTrack();
             if(i > 0)
                 element.Initialize();
         }
     }
 
-    private void MoveTrack(int index)
+    private void MoveTrack()
     {
         var firstElement = _elements[0];
         for (var i = 1; i < _elementsCount; i++)
@@ -71,6 +73,7 @@ public class Track : MonoBehaviour
         firstElement.transform.position = _elementRespawnPosition + Vector3.forward * ((_elementsCount - 1) * _scaleZ);
         _elements[_elementsCount - 1] = firstElement;
         firstElement.TargetPosition = Vector3.forward * (_elementsCount - 1) * _scaleZ;
+
         OnTrackMoved?.Invoke();
         firstElement.Initialize();
     }

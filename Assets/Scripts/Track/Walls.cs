@@ -6,6 +6,7 @@ using UnityEngine;
 public class Walls : ScriptableObject
 {
     [SerializeField] private List<Wall> _walls;
+
     public List<Wall> GetWallInfo => _walls;
 }
 
@@ -14,6 +15,7 @@ public struct Wall
 {
     public List<WallElement> elements;
 }
+
 [Serializable]
 public struct WallElement
 {

@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.UIElements;
 
 public class CollectCubeEffect : MonoBehaviour
 {
@@ -11,6 +9,7 @@ public class CollectCubeEffect : MonoBehaviour
     [SerializeField] private int _defaultPoolCapacity;
     [SerializeField] private int _maxPoolSize;
     [SerializeField] private float _lifetime = 2f;
+
     private ObjectPool<GameObject> _pool;
 
     void Awake()
@@ -24,6 +23,7 @@ public class CollectCubeEffect : MonoBehaviour
             _defaultPoolCapacity,
             _maxPoolSize);
     }
+
     private void OnApplicationQuit()
     {
         _pool.Dispose();
@@ -39,7 +39,7 @@ public class CollectCubeEffect : MonoBehaviour
         var go = _pool.Get();
         go.transform.position = transform.position + _offset;
         Track.Parented(go);
-        yield return new WaitForSeconds( _lifetime );
+        yield return new WaitForSeconds( _lifetime);
         _pool.Release(go);
     }
 

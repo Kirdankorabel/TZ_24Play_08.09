@@ -8,7 +8,7 @@ public class CameraShaker : MonoBehaviour
 
     private void Start()
     {
-        Holder.OnHolderCollision += () => StartCoroutine(ShakeCorutine());
+        PlayerController.OnCollision += () => StartCoroutine(ShakeCorutine());
     }
 
     private IEnumerator ShakeCorutine()

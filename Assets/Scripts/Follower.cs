@@ -4,7 +4,9 @@ public class Follower : MonoBehaviour
 {
     [SerializeField] private Transform _targetTransform;
     [SerializeField] private bool _fixXY;
+
     private Vector3 _offset;
+
     void Start()
     {
         _offset = transform.position - _targetTransform.position;

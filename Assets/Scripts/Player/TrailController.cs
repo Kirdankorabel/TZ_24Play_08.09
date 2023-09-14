@@ -4,6 +4,7 @@ using UnityEngine;
 public class TrailController : MonoBehaviour
 {
     private TrailRenderer _trailRenderer;
+    private float _minCarryingDistanseSqr = 0.01f;
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class TrailController : MonoBehaviour
     public void MoveAll()
     {
         for (var i = 0; i < _trailRenderer.positionCount; i++)
-            if((_trailRenderer.GetPosition(i) - transform.position).sqrMagnitude > 0.01f)
+            if((_trailRenderer.GetPosition(i) - transform.position).sqrMagnitude > _minCarryingDistanseSqr)
                 _trailRenderer.SetPosition(i, _trailRenderer.GetPosition(i) - Vector3.forward * TrackInfo.elenemtSize);
     }
 }

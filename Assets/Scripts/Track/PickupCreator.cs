@@ -7,10 +7,12 @@ public class PickupCreator : Singleton<PickupCreator>
     [SerializeField] private GameObject _pickupPrefab;
     [SerializeField] private int _defaultPoolCapacity;
     [SerializeField] private int _maxPoolSize;
+    [SerializeField] private int _spaceAfterWall = 1;
+    [SerializeField] private int _spaceBeforeWall = 1;
 
     private ObjectPool<GameObject> _pool;
 
-    void Awake()
+    private void Awake()
     {
         _pool = new ObjectPool<GameObject>(
             InstantiateObstacle,
@@ -26,11 +28,12 @@ public class PickupCreator : Singleton<PickupCreator>
     {
         GameObject pickup;
         List<GameObject> pickups = new List<GameObject>();
-        var offset = TrackInfo.elenemtSize / (TrackInfo.pickupCount + 2);
+        var offset = TrackInfo.elenemtSize / (TrackInfo.pickupCount + _spaceAfterWall + _spaceBeforeWall);
         for (var i = 0; i < TrackInfo.pickupCount; i++)
         {
             pickup = _pool.Get();
-            pickup.transform.position = trackElementTransform.position + new Vector3(Random.Range(TrackInfo.min, TrackInfo.max + 1), 0.5f, (i + 1) * offset);
+            var localPosition = new Vector3(Random.Range(TrackInfo.min, TrackInfo.max + 1), 0.5f, (i + _spaceAfterWall) * offset);
+            pickup.transform.position = trackElementTransform.position + localPosition;
             pickup.transform.parent = trackElementTransform;
             pickups.Add(pickup);
         }

@@ -8,17 +8,17 @@ public class RagdollController : MonoBehaviour
     [SerializeField] private Vector3 _startPosition = new Vector3(-0.031635616f, -0.0815873146f, -0.0336700901f);
     [SerializeField] private Vector3 _rotation = new Vector3(274.448639f, 42.5317841f, 180.768585f);
 
-    private Vector3[] startPositions;
-    private Quaternion[] startRotations;
+    private Vector3[] _startPositions;
+    private Quaternion[] _startRotations;
 
-    void Start()
+    private void Start()
     {
-        startPositions = new Vector3[_rigidbodies.Length];
-        startRotations = new Quaternion[_rigidbodies.Length];
+        _startPositions = new Vector3[_rigidbodies.Length];
+        _startRotations = new Quaternion[_rigidbodies.Length];
         for (var i = 0; i < _rigidbodies.Length; i++)
         {
-            startPositions[i] = _rigidbodies[i].gameObject.transform.localPosition;
-            startRotations[i] = _rigidbodies[i].gameObject.transform.localRotation;
+            _startPositions[i] = _rigidbodies[i].gameObject.transform.localPosition;
+            _startRotations[i] = _rigidbodies[i].gameObject.transform.localRotation;
         }
         DisablePhysics(true);
         Holder.OnHolderCollision += () => DisablePhysics(false);
@@ -33,8 +33,8 @@ public class RagdollController : MonoBehaviour
             _scelet.transform.rotation = Quaternion.Euler(_rotation);
             for (var i = 0; i < _rigidbodies.Length; i++)
             {
-                _rigidbodies[i].gameObject.transform.rotation = startRotations[i];
-                _rigidbodies[i].gameObject.transform.localPosition = startPositions[i];
+                _rigidbodies[i].gameObject.transform.rotation = _startRotations[i];
+                _rigidbodies[i].gameObject.transform.localPosition = _startPositions[i];
             }
         }
         foreach (var rigidbody in _rigidbodies)

@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private List<Pickup> _pickups = new List<Pickup>();
 
+    public static event UnityAction OnCollision;
     public UnityEvent OnPickupAdded;
 
     private void Start()
@@ -25,31 +26,35 @@ public class PlayerController : MonoBehaviour
 
     private void Reset()
     {
-        _playerBase.transform.localPosition = Vector3.up * 0.5f;
-        _holder.transform.localPosition = Vector3.up * 0.5f;
+        _playerBase.transform.localPosition = Vector3.up / 2f;
+        _holder.transform.localPosition = Vector3.up / 2f;
     }
 
     private void AddPickup(Pickup pickup)
     {
-        _playerBase.transform.localPosition = Vector3.up * 0.5f;
         if (_pickups.Contains(pickup)) return;
+
         _pickups.Add(pickup);
         pickup.transform.parent = transform;
-        for(var i = 0; i < _pickups.Count; i++)
-        {
-            pickup.transform.localPosition = Vector3.up * (i + 0.5f);
-        }
-        _holder.transform.localPosition = Vector3.up * (_pickups.Count);
         pickup.OnWallCollision += () => RemovePickup(pickup);
+
+        for (var i = 0; i < _pickups.Count; i++)
+            pickup.transform.localPosition = Vector3.up * i + Vector3.up / 2f;
+
+        _playerBase.transform.localPosition = Vector3.up / 2f;
+        _holder.transform.localPosition = Vector3.up * (_pickups.Count);
         OnPickupAdded?.Invoke();
     }
 
     private void RemovePickup(Pickup pickup)
     {
+        OnCollision?.Invoke();
         Handheld.Vibrate();
-        _pickups.Remove(pickup);
+
         foreach (var p in _pickups) 
             p.EnableGravity();
+
+        _pickups.Remove(pickup);
         _holder.EnableGravity();
         Track.Parented(pickup.gameObject);
     }    

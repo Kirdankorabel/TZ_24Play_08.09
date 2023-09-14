@@ -5,7 +5,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody))]
 public class Pickup : MonoBehaviour
 {
-    [SerializeField] private float _delayTime = 0.7f;
+    [SerializeField] private float _timeDelay = 0.7f;
 
     private Rigidbody _rb;
     private bool _isUsed;
@@ -43,7 +43,7 @@ public class Pickup : MonoBehaviour
     private IEnumerator EnablePhysicsCorutine()
     {
         _rb.useGravity = false;
-        yield return new WaitForSeconds(_delayTime);
+        yield return new WaitForSeconds(_timeDelay);
         _rb.useGravity = true; 
     }
 }
