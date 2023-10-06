@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Base : MonoBehaviour
+public class Bottom : MonoBehaviour
 {
     public event UnityAction<Pickup> OnPickupCollision;
 

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Base _playerBase;
+    [SerializeField] private Bottom _playerBase;
     [SerializeField] private Holder _holder;
     [SerializeField] private GameObject _character;
 

@@ -12,7 +12,6 @@ public class PlayerMover : MonoBehaviour
 
     void Start()
     {
-        _moveEffect.Stop();
         Holder.OnHolderCollision += () => _isPlaying = false;
         UIController.OnRestart += () => Reset();
         UIController.OnStarted += () =>
@@ -20,10 +19,7 @@ public class PlayerMover : MonoBehaviour
             Reset();
             _moveEffect.Play();
         };
-        _minPositionX = TrackInfo.min;
-        _maxPositionX = TrackInfo.max;
-        _trackWidth = _maxPositionX - _minPositionX + 1;
-        _startPosition = transform.position;
+        SetStartState();
     }
 
     private void FixedUpdate()
@@ -42,5 +38,14 @@ public class PlayerMover : MonoBehaviour
     {
         _isPlaying = true;
         transform.position = _startPosition;
+    }
+
+    private void SetStartState()
+    {
+        _moveEffect.Stop();
+        _minPositionX = TrackInfo.min;
+        _maxPositionX = TrackInfo.max;
+        _trackWidth = _maxPositionX - _minPositionX + 1;
+        _startPosition = transform.position;
     }
 }

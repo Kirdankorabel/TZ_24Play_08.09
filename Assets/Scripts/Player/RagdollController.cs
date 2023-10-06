@@ -13,6 +13,25 @@ public class RagdollController : MonoBehaviour
 
     private void Start()
     {
+        CreateInitialState();
+        Holder.OnHolderCollision += () => DisablePhysics(false);
+        UIController.OnRestart += () => DisablePhysics(true);
+    }
+
+    private void DisablePhysics(bool enable)
+    {
+        if (enable)
+            GetInitialState();
+        foreach (var rigidbody in _rigidbodies)
+        {
+            rigidbody.isKinematic = enable;
+            rigidbody.velocity = Vector3.zero;
+        }
+        _animator.enabled = enable;
+    }
+
+    private void CreateInitialState()
+    {
         _startPositions = new Vector3[_rigidbodies.Length];
         _startRotations = new Quaternion[_rigidbodies.Length];
         for (var i = 0; i < _rigidbodies.Length; i++)
@@ -21,27 +40,16 @@ public class RagdollController : MonoBehaviour
             _startRotations[i] = _rigidbodies[i].gameObject.transform.localRotation;
         }
         DisablePhysics(true);
-        Holder.OnHolderCollision += () => DisablePhysics(false);
-        UIController.OnRestart += () => DisablePhysics(true);
     }
 
-    private void DisablePhysics(bool enable)
+    private void GetInitialState()
     {
-        if (enable)
+        _scelet.transform.localPosition = _startPosition;
+        _scelet.transform.rotation = Quaternion.Euler(_rotation);
+        for (var i = 0; i < _rigidbodies.Length; i++)
         {
-            _scelet.transform.localPosition = _startPosition;
-            _scelet.transform.rotation = Quaternion.Euler(_rotation);
-            for (var i = 0; i < _rigidbodies.Length; i++)
-            {
-                _rigidbodies[i].gameObject.transform.rotation = _startRotations[i];
-                _rigidbodies[i].gameObject.transform.localPosition = _startPositions[i];
-            }
+            _rigidbodies[i].gameObject.transform.rotation = _startRotations[i];
+            _rigidbodies[i].gameObject.transform.localPosition = _startPositions[i];
         }
-        foreach (var rigidbody in _rigidbodies)
-        {
-            rigidbody.isKinematic = enable;
-            rigidbody.velocity = Vector3.zero;
-        }
-        _animator.enabled = enable;
-    }
+    }    
 }
